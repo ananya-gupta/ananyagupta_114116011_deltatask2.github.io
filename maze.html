@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dungeon-Crawler Roguelike
+		</title>
+		<style>
+
+			canvas {
+				margin-left : 700px;
+				border: 1px solid #ffffff;
+				background-color: #ffffff;
+					}
+			body {
+				background-image : url("smile.gif");
+				}
+			h1 {
+				color : #0000FF;
+				font-family : "Arial Black", Gadget, sans-serif;
+				}
+			h4 {
+				color : red;
+				font-family : "Comic Sans MS", cursive, sans-serif;
+				}
+		</style>
+	</head>
+	<body >
+		<center>
+			<div>
+				<h1>StarRock Studios Presents
+				</h1>
+				<h2 style="color : green">Dungeon-Crawler Roguelike
+				</h2>
+				<h2 style=>Game Rules:-
+				</h2>
+				<h4>You have 3 LEVELS or FLOORS to play
+				</h4>
+				<h4>You have a LIMITED TIME i.e. 2 MIN to complete the game
+				</h4>
+				<h4>Use arrow keys to navigate your player
+				</h4>
+				<button onclick="startGame1()">LETS PLAY !!
+				</button>
+				<button onclick="document.location.reload()">RESTART
+				</button>
+			</div>
+			<div id="clockdiv">
+			</div>
+		</center>
+		<script>
+      var player,collision=0,myMusic,t,X=600,Y=250;
+      var ctx;
+	  // adds all the componets to the game window i.e. player, maze,canvas,music,etc.
+		function startGame() {
+			myGameArea.start();
+			player = new component(10,10,"red",0,25);
+			myMusic = new sound("music.mp3");
+			myMusic.play();
+		}
+		//created canvas, add key functions to it, add setInterval,add clear function to  clear previous frame
+		var myGameArea = {
+			canvas : document.createElement("canvas"),
+			start : function() {
+			this.canvas.width = 200;
+			this.canvas.height = 200;
+			this.context = this.canvas.getContext("2d");
+			document.body.insertBefore(this.canvas, document.body.childNodes[2]);
+			this.interval = setInterval(updateGameArea, 20);
+			window.addEventListener('keydown', function (e) {
+				myGameArea.key = e.keyCode;
+			}
+									)
+			window.addEventListener('keyup', function (e) {
+				myGameArea.key = false;
+			}
+									)
+			}
+			,
+			clear : function() {
+			this.context.clearRect(0, 0, 1200, 500);
+			}
+		}
+		// used to create game player
+		function component(width, height, color, x, y) {
+			this.width = width;
+			this.height = height;
+			this.x = x;
+			this.y = y;
+			this.update = function(){
+				ctx = myGameArea.context;
+				ctx.fillStyle = color;
+				ctx.fillRect(this.x, this.y, this.width, this.height);
+				}
+			this.newPos = function() {
+				this.x += this.speedX;
+				this.y += this.speedY;
+				}
+			}
+			// updates game area in every 20ms accorging to the change in player's position
+		function updateGameArea() {
+			player.speedX = 0;
+			player.speedY = 0;
+			//calls various player movement function accorging to the arrow key pressed
+			if(player.y>=0){
+				if (myGameArea.key && myGameArea.key == 38)
+					up();
+			}
+			if(player.y<=470){
+				if (myGameArea.key && myGameArea.key == 40)
+				down();
+			}
+			if(player.x>=0){
+				if (myGameArea.key && myGameArea.key == 37)
+				left();
+			}
+			if(player.x<=1200){
+				if (myGameArea.key && myGameArea.key == 39)
+				right();
+			}
+			myGameArea.clear();
+			player.newPos();
+			player.update();
+			level_1_interior();
+			level_2_interior();
+			level_3_interior();
+			//displays alert message on completion of levels
+			if(player.x==X-200){
+				alert("YOU HAVE COMPLETED LEVEL 1")
+			}
+			if(player.x==X+200){
+				alert("YOU HAVE COMPLETED LEVEL 2")
+			}
+			if(player.x==X+590){
+				alert("YOU HAVE COMPLETED LEVEL 3");
+				document.location.reload();
+			}
+		}
+		//function to make interior of level 1 and side walls
+		function level_1_interior(){
+			ctx = myGameArea.context;
+			ctx.beginPath();
+			ctx.moveTo(X-580,Y-200);
+			ctx.lineTo(X-400,Y-200);
+			ctx.moveTo(X-380,Y-200);
+			ctx.lineTo(X-240,Y-200);
+			ctx.moveTo(X-370,Y-200);
+			ctx.lineTo(X-370,Y+20);
+			ctx.lineTo(X-220,Y+20);
+			ctx.moveTo(X-220,Y+60);
+			ctx.lineTo(X-380,Y+60);
+			ctx.moveTo(X-370,Y+60);
+			ctx.lineTo(X-370,Y+110);
+			ctx.moveTo(X-370,Y+130);
+			ctx.lineTo(X-370,Y+250);
+			ctx.moveTo(X-340,Y+120);
+			ctx.lineTo(X-200,Y+120);
+			ctx.moveTo(X-380,Y+190);
+			ctx.lineTo(X-250,Y+190);
+			ctx.moveTo(X-200,Y-140);
+			ctx.lineTo(X-320,Y-140);
+			ctx.moveTo(X-270,Y-140);
+			ctx.lineTo(X-270,Y-30);
+			ctx.moveTo(X-320,Y+10);
+			ctx.lineTo(X-320,Y-100);
+			ctx.moveTo(X-410,Y-190);
+			ctx.lineTo(X-410,Y-100);
+			ctx.moveTo(X-410,Y-70);
+			ctx.lineTo(X-410,Y+140);
+			ctx.moveTo(X-410,Y+160);
+			ctx.lineTo(X-410,Y+250);
+			ctx.moveTo(X-460,Y+250);
+			ctx.lineTo(X-460,Y+140);
+			ctx.moveTo(X-460,Y+150);
+			ctx.lineTo(X-540,Y+150);
+			ctx.moveTo(X-600,Y+70);
+			ctx.lineTo(X-450,Y+70);
+			ctx.moveTo(X-400,Y-30);
+			ctx.lineTo(X-550,Y-30);
+			ctx.moveTo(X-600,Y-90);
+			ctx.lineTo(X-460,Y-90);
+			ctx.moveTo(X-470,Y-90);
+			ctx.lineTo(X-470,Y-150);
+			ctx.moveTo(X-400,Y-10);
+			ctx.lineTo(X-360,Y-10);
+			ctx.moveTo(X-210,Y-250);
+			ctx.lineTo(X-210,Y+30);
+			ctx.moveTo(X-210,Y+50);
+			ctx.lineTo(X-210,Y+250);
+			ctx.moveTo(X-600,Y-240);
+			ctx.lineTo(X+600,Y-240);
+			ctx.moveTo(X-600,Y+240);
+			ctx.lineTo(X+600,Y+240);
+			ctx.moveTo(X-590,Y-210);
+			ctx.lineTo(X-590,Y+250);
+			ctx.lineWidth = 20;
+			ctx.stroke();
+			ctx.closePath();
+		  }
+		  //function to make interior of level 2
+		  function level_2_interior(){
+			ctx = myGameArea.context;
+			ctx.beginPath();
+			ctx.moveTo(X-200,Y+20);
+			ctx.lineTo(X-60,Y+20);
+			ctx.moveTo(X-70,Y+20);
+			ctx.lineTo(X-70,Y-70);
+			ctx.moveTo(X-140,Y-30);
+			ctx.lineTo(X-140,Y-190);
+			ctx.moveTo(X-200,Y+60);
+			ctx.lineTo(X-60,Y+60);
+			ctx.moveTo(X-70,Y+60);
+			ctx.lineTo(X-70,Y+140);
+			ctx.moveTo(X-70,Y+170);
+			ctx.lineTo(X-70,Y+250);
+			ctx.moveTo(X-140,Y+50);
+			ctx.lineTo(X-140,Y+200);
+			ctx.moveTo(X+200,Y-120);
+			ctx.lineTo(X-80,Y-120);
+			ctx.moveTo(X-10,Y-120);
+			ctx.lineTo(X-10,Y+200);
+			ctx.moveTo(X+200,Y-80);
+			ctx.lineTo(X+100,Y-80);
+			ctx.moveTo(X+70,Y-80);
+			ctx.lineTo(X-10,Y-80);
+			ctx.moveTo(X-10,Y-10);
+			ctx.lineTo(X+140,Y-10);
+			ctx.moveTo(X+200,Y+50);
+			ctx.lineTo(X+40,Y+50);
+			ctx.moveTo(X-10,Y+120);
+			ctx.lineTo(X+140,Y+120);
+			ctx.moveTo(X-10,Y+190);
+			ctx.lineTo(X+50,Y+190);
+			ctx.moveTo(X+90,Y+190);
+			ctx.lineTo(X+200,Y+190);
+			ctx.moveTo(X-30,Y-130);
+			ctx.lineTo(X-30,Y-190);
+			ctx.moveTo(X+50,Y-230);
+			ctx.lineTo(X+50,Y-160);
+			ctx.moveTo(X+120,Y-190);
+			ctx.lineTo(X+120,Y-130);
+			ctx.moveTo(X+190,Y-230);
+			ctx.lineTo(X+190,Y-90);
+			ctx.moveTo(X+190,Y-70);
+			ctx.lineTo(X+190,Y+250);
+			ctx.lineWidth = 20;
+			ctx.stroke();
+			ctx.closePath();
+		  }
+		  //function to make interior of level 3
+		  function level_3_interior(){
+			ctx = myGameArea.context;
+			ctx.beginPath();
+			ctx.moveTo(X+200,Y-120);
+			ctx.lineTo(X+300,Y-120);
+			ctx.moveTo(X+340,Y-120);
+			ctx.lineTo(X+540,Y-120);
+			ctx.moveTo(X+400,Y-190);
+			ctx.lineTo(X+400,Y+250);
+			ctx.moveTo(X+320,Y-230);
+			ctx.lineTo(X+320,Y-160);
+			ctx.moveTo(X+250,Y-130);
+			ctx.lineTo(X+250,Y-200);
+			ctx.moveTo(X+600,Y-30);
+			ctx.lineTo(X+450,Y-30);
+			ctx.moveTo(X+400,Y+40);
+			ctx.lineTo(X+540,Y+40);
+			ctx.moveTo(X+600,Y+100);
+			ctx.lineTo(X+450,Y+100);
+			ctx.moveTo(X+530,Y+100);
+			ctx.lineTo(X+530,Y+190);
+			ctx.moveTo(X+460,Y+140);
+			ctx.lineTo(X+460,Y+250);
+			ctx.moveTo(X+500,Y-230);
+			ctx.lineTo(X+500,Y-160);
+			ctx.moveTo(X+250,Y-130);
+			ctx.lineTo(X+250,Y+200);
+			ctx.moveTo(X+250,Y+190);
+			ctx.lineTo(X+350,Y+190);
+			ctx.moveTo(X+400,Y+100);
+			ctx.lineTo(X+290,Y+100);
+			ctx.moveTo(X+250,Y+20);
+			ctx.lineTo(X+350,Y+20);
+			ctx.moveTo(X+400,Y-50);
+			ctx.lineTo(X+290,Y-50);
+			ctx.moveTo(X+590,Y-230);
+			ctx.lineTo(X+590,Y+130);
+			ctx.moveTo(X+590,Y+150);
+			ctx.lineTo(X+590,Y+250);
+			ctx.lineWidth = 20;
+			ctx.stroke();
+			ctx.closePath();
+		  }
+		  //function to add background sound
+		  function sound(src) {
+			this.sound = document.createElement("audio");
+			this.sound.src = src;
+			this.sound.setAttribute("preload", "auto");
+			this.sound.setAttribute("controls", "none");
+			this.sound.style.display = "none";
+			document.body.appendChild(this.sound);
+			this.play = function(){
+			  this.sound.play();
+			}
+			this.stop = function(){
+			  this.sound.pause();
+			}
+		  }
+		  //function to check pixel collision detection,if pixel colour == black, then red value will be 0.
+		  function checkcollision() {
+			var imgd = ctx.getImageData(player.x, player.y, 10, 10);
+			var pix = imgd.data;
+			n = pix.length;
+			for (var i = 0, n = pix.length; i < n; i += 4) {
+			  if (pix[i] == 0) {
+				collision = 1;
+				console.log(pix);
+				console.log(i);
+			  }
+			  else{
+				collision=0;
+			  }
+			}
+			console.log(collision);
+		  }
+		  //function called on pressing LETS PLAY !! button, it starts the game and the timer.
+		  function startGame1()
+		  {
+			startGame();
+			var timeInMinutes = 2;
+			var currentTime = Date.parse(new Date());
+			var deadline = new Date(currentTime + timeInMinutes*60*1000);
+			// this function takes the time of calling of the startGame1() and then add 2 minutes to it and calculate the time remaining to display in timer.
+			function getTimeRemaining(endtime){
+			  var t = Date.parse(endtime) - Date.parse(new Date());
+			  var seconds = Math.floor( (t/1000) % 60 );
+			  var minutes = Math.floor( (t/1000/60) % 60 );
+			  var hours = Math.floor( (t/(1000*60*60)) % 24 );
+			  var days = Math.floor( t/(1000*60*60*24) );
+			  return {
+				'total': t,
+				'days': days,
+				'hours': hours,
+				'minutes': minutes,
+				'seconds': seconds
+			  };
+			}
+			function initializeClock(id, endtime){
+			  var clock = document.getElementById(id);
+			  function updateClock(){
+				var t = getTimeRemaining(endtime);
+				clock.innerHTML = 'TIME LEFT - '+'minutes: ' + t.minutes + 
+				  ' seconds: ' + t.seconds;
+				if(t.total<=0){
+				  clearInterval(timeinterval);
+				  alert("GAME OVER , TIME'S UP");
+				  document.location.reload();
+				}
+			  }
+			  updateClock();
+			  // run function once at first to avoid delay
+			  var timeinterval = setInterval(updateClock,1000);
+			}
+			initializeClock('clockdiv', deadline);
+		  }
+		  //called on pressing up arrow key, moves the player upwards and also moves the camera with player and calls collision checking function
+		  function up(){
+			player.speedY = -1;
+			if(player.y>=100&&player.y<=400&&Y-250<=0){
+			  Y+=1;
+			  player.speedY = 0;
+			}
+			checkcollision();
+			if(collision==1){
+			  player.speedY = 1;
+			  collision = 0;
+			}
+		  }
+		  //called on pressing down arrow key, moves the player downwards and also moves the camera with player and calls collision checking function
+		  function down(){
+			player.speedY = 1;
+			if(player.y>=100&&player.y<=400&&Y+250>=200){
+			  Y-=1;
+			  player.speedY = 0;
+			}
+			checkcollision();
+			if(collision==1){
+			  player.speedY = -1;
+			  collision = 0;
+			}
+		  }
+		  //called on pressing right arrow key, moves the player to the right and also moves the camera with player and calls collision checking function
+		  function right(){
+			player.speedX = 1;
+			if (player.x>=100&&player.x<=1100&&X+600>=200){
+			  X-=1;
+			  player.speedX = 0;
+			}
+			checkcollision();
+			if(collision==1){
+			  player.speedX = -1;
+			  collision = 0;
+			}
+		  }
+		  //called on pressing left arrow key, moves the player to the left and also moves the camera with player and calls collision checking function
+		  function left(){
+			player.speedX = -1;
+			if (player.x>=100&&player.x<=1100&&X-600<=0){
+			  X+=1;
+			  player.speedX = 0;
+			}
+			checkcollision();
+			if(collision==1){
+			  player.speedX = 1;
+			  collision = 0;
+			}
+		  }
+		</script>
+	</body>
+</html>
